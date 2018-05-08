@@ -32,24 +32,26 @@
 #include <sys/xattr.h>
 #include <unistd.h>
 
-extern int PUBLIC close(int fd);
-extern int PUBLIC closedir(DIR *dirp);
-extern int PUBLIC dirfd(DIR *dirp);
-extern int PUBLIC fcntl(int fd, int cmd, ...);
-extern FILE * PUBLIC fdopen(int fd, const char *mode);
-extern int PUBLIC fileno(FILE *stream);
-extern FILE * PUBLIC fopen(const char *pathname, const char *mode);
-extern FILE * PUBLIC freopen(const char *pathname, const char *mode, FILE *stream);
-extern ssize_t getxattr(const char *path, const char *name, void *value, size_t size);
-extern int PUBLIC ioctl(int fd, unsigned long request, ...);
-extern off_t PUBLIC lseek(int fd, off_t offset, int whence);
-extern int PUBLIC open(const char *pathname, int flags, ...);
-extern int PUBLIC openat(int dirfd, const char *pathname, int flags, ...);
-extern DIR * PUBLIC opendir(const char *name);
-extern DIR * PUBLIC fdopendir(int fd);
-extern struct dirent * PUBLIC readdir(DIR *dirp);
-extern ssize_t PUBLIC readlink(const char *pathname, char *buf, size_t bufsiz);
-extern ssize_t PUBLIC readlinkat(int dirfd, const char *pathname, char *buf, size_t bufsiz);
+extern int access(const char *pathname, int mode) PUBLIC;
+extern int close(int fd) PUBLIC;
+extern int closedir(DIR *dirp) PUBLIC;
+extern int dirfd(DIR *dirp) PUBLIC;
+extern int faccessat(int dirfd, const char *pathname, int mode, int flags) PUBLIC;
+extern int fcntl(int fd, int cmd, ...) PUBLIC;
+extern FILE *fdopen(int fd, const char *mode) PUBLIC;
+extern int fileno(FILE *stream) PUBLIC;
+extern FILE *fopen(const char *pathname, const char *mode) PUBLIC;
+extern FILE *freopen(const char *pathname, const char *mode, FILE *stream) PUBLIC;
+extern ssize_t getxattr(const char *path, const char *name, void *value, size_t size) PUBLIC;
+extern int ioctl(int fd, unsigned long request, ...) PUBLIC;
+extern off_t lseek(int fd, off_t offset, int whence) PUBLIC;
+extern int open(const char *pathname, int flags, ...) PUBLIC;
+extern int openat(int dirfd, const char *pathname, int flags, ...) PUBLIC;
+extern DIR *opendir(const char *name) PUBLIC;
+extern DIR *fdopendir(int fd) PUBLIC;
+extern struct dirent *readdir(DIR *dirp) PUBLIC;
+extern ssize_t readlink(const char *pathname, char *buf, size_t bufsiz) PUBLIC;
+extern ssize_t readlinkat(int dirfd, const char *pathname, char *buf, size_t bufsiz) PUBLIC;
 
 #endif /* !BDSIM_API_H_ */
 // vim:fenc=utf-8:tw=75

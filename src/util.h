@@ -39,13 +39,6 @@
 #include <tgmath.h>
 #include <unistd.h>
 
-#define UNUSED __attribute__((__unused__))
-#define HIDDEN __attribute__((__visibility__ ("hidden")))
-#define PRIVATE HIDDEN
-#define PUBLIC __attribute__((__visibility__ ("default")))
-#define DESTRUCTOR __attribute__((destructor))
-#define CONSTRUCTOR __attribute__((constructor))
-
 /*
  * I'm not actually sure when these appear, but they're present in the
  * version in front of me.
@@ -143,8 +136,7 @@
 #endif
 
 
-static inline int
-__attribute__((unused))
+static inline int UNUSED
 read_file(int fd, uint8_t **buf, size_t *bufsize)
 {
         uint8_t *p;
@@ -226,8 +218,7 @@ read_file(int fd, uint8_t **buf, size_t *bufsize)
         return 0;
 }
 
-static inline uint64_t
-__attribute__((unused))
+static inline uint64_t UNUSED
 lcm(uint64_t x, uint64_t y)
 {
         uint64_t m = x, n = y, o;
@@ -246,8 +237,7 @@ lcm(uint64_t x, uint64_t y)
  * Returns:
  *  sector size, or 512.
  ************************************************************/
-static inline int
-__attribute__((unused))
+static inline int UNUSED
 get_sector_size(int filedes)
 {
         int rc, sector_size = 512;
@@ -340,8 +330,8 @@ sysfs_root(void)
                         bdsim_error("asprintfa() failed");              \
                 } else {                                                \
                         d_ = opendir(dirname_);                         \
-		        if (!d_)                                        \
-                                bdsim_error("opendir failed on "%s",    \
+                        if (!d_)                                        \
+                                bdsim_error("opendir failed on \"%s\"", \
                                           path);                        \
                 }                                                       \
                 d_;                                                     \
@@ -435,7 +425,7 @@ get_file(uint8_t **result, const char * const fmt, ...)
         })
 
 #define sysfs_stat(statbuf, fmt, args...)                               \
-	({                                                              \
+        ({                                                              \
                 int rc_;                                                \
                 char *pn_;                                              \
                                                                         \
@@ -450,22 +440,7 @@ get_file(uint8_t **result, const char * const fmt, ...)
                 rc_;                                                    \
         })
 
-static inline void
-__attribute__((unused))
-swizzle_guid_to_uuid(efi_guid_t *guid)
-{
-        uint32_t *u32;
-        uint16_t *u16;
-
-        u32 = (uint32_t *)guid;
-        u32[0] = __builtin_bswap32(u32[0]);
-        u16 = (uint16_t *)&u32[1];
-        u16[0] = __builtin_bswap16(u16[0]);
-        u16[1] = __builtin_bswap16(u16[1]);
-}
-
-static inline bool
-__attribute__((unused))
+static inline bool UNUSED
 cinpat(const char c, const char *pat)
 {
         for (unsigned int i = 0; pat[i]; i++)
@@ -474,8 +449,7 @@ cinpat(const char c, const char *pat)
         return false;
 }
 
-static inline unsigned int
-__attribute__((unused))
+static inline unsigned int UNUSED
 strxcspn(const char *s, const char *pattern)
 {
         unsigned int i;
@@ -502,8 +476,7 @@ struct span {
  * the usage model here is 1 pass to count, one allocation, one pass to
  * separate.
  */
-static inline unsigned int
-__attribute__((unused))
+static inline unsigned int UNUSED
 count_spans(const char *str, const char *reject, unsigned int *chars)
 {
         unsigned int s = 0, c = 0, pos = 0;
@@ -532,8 +505,7 @@ count_spans(const char *str, const char *reject, unsigned int *chars)
         return s;
 }
 
-static inline void
-__attribute__((unused))
+static inline void UNUSED
 fill_spans(const char *str, const char *reject, void *spanbuf)
 {
         struct span *spans = (struct span *)spanbuf;
@@ -580,8 +552,7 @@ fill_spans(const char *str, const char *reject, void *spanbuf)
                 ret_;                                                   \
         })
 
-static inline int
-__attribute__((unused))
+static inline int UNUSED
 find_path_segment(const char *path, int segment, const char **pos, size_t *len)
 {
         struct span *span, *last;
@@ -641,6 +612,32 @@ find_path_segment(const char *path, int segment, const char **pos, size_t *len)
                 }                                                       \
                 ret_;                                                   \
         })
+
+static inline bool UNUSED
+is_blkdev_at(int dirfd, const char *pathname)
+{
+        struct stat sb;
+        int rc;
+
+        memset(&sb, 0, sizeof (sb));
+        rc = fstatat(dirfd, pathname, &sb, AT_EMPTY_PATH|AT_NO_AUTOMOUNT);
+        if (rc < 0)
+                return false;
+        return S_ISBLK(sb.st_mode);
+}
+
+static inline bool UNUSED
+is_blkdev(const char *pathname)
+{
+        struct stat sb;
+        int rc;
+
+        memset(&sb, 0, sizeof (sb));
+        rc = stat(pathname, &sb);
+        if (rc < 0)
+                return false;
+        return S_ISBLK(sb.st_mode);
+}
 
 #define debug_(file, line, func, level, fmt, args...)                   \
         ({                                                              \
