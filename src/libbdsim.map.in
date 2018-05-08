@@ -1,0 +1,38 @@
+libbdsim.so.1 {
+	local:	*;
+};
+
+GLIBC_2.2.5 {
+	global:
+		access;
+		close;
+		closedir;
+		dirfd;
+		fcntl;
+		fdopen;
+		fileno;
+		fopen;
+		freopen;
+		ioctl;
+		lseek;
+		open;
+		opendir;
+		readdir;
+		readlink;
+	local:	*;
+} libbdsim.so.1;
+
+GLIBC_2.3 {
+	global:
+		getxattr;
+	local:	*;
+} GLIBC_2.2.5;
+
+GLIBC_2.4 {
+	global:
+		faccessat;
+		fdopendir;
+		openat;
+		readlinkat;
+	local:	*;
+} GLIBC_2.3;

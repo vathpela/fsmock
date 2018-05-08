@@ -1,0 +1,11 @@
+prefix=@@PREFIX@@
+exec_prefix=@@EXEC_PREFIX@@
+libdir=@@LIBDIR@@
+includedir=@@INCLUDEDIR@@
+
+Name: bdsim
+Description: block device test simulation
+Version: @@VERSION@@
+Libs: -L${libdir} -lbdsim
+Libs.private: -ldl
+Cflags: -I${includedir}/bdsim
