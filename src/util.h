@@ -304,7 +304,7 @@ get_sector_size(int filedes)
 
 /*
  * This returns a static buffer containing either "" or whatever is set in the
- * environment variable LIBFSMOCK_SYSFS
+ * environment variable LIBFSMOCK_ROOT
  */
 static inline char *
 sysfs_root(void)
@@ -314,7 +314,7 @@ sysfs_root(void)
 
         if (sysfs_root)
                 return sysfs_root;
-        sysfs_root = getenv("LIBFSMOCK_SYSFS");
+        sysfs_root = getenv("LIBFSMOCK_ROOT");
         if (!sysfs_root)
                 sysfs_root = default_sysfs_root;
         return sysfs_root;
