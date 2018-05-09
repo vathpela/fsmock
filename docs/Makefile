@@ -5,7 +5,7 @@ include $(TOPDIR)/Make.version
 include $(TOPDIR)/Make.rules
 include $(TOPDIR)/Make.defaults
 
-MAN1TARGETS = bdsim.1
+MAN1TARGETS = fsmock.1
 
 all :
 

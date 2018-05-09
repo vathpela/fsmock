@@ -3,9 +3,9 @@ exec_prefix=@@EXEC_PREFIX@@
 libdir=@@LIBDIR@@
 includedir=@@INCLUDEDIR@@
 
-Name: bdsim
+Name: fsmock
 Description: block device test simulation
 Version: @@VERSION@@
-Libs: -L${libdir} -lbdsim
+Libs: -L${libdir} -lfsmock
 Libs.private: -ldl
-Cflags: -I${includedir}/bdsim
+Cflags: -I${includedir}/fsmock

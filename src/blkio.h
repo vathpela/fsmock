@@ -17,8 +17,8 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BDSIM_BLKIO_H_
-#define BDSIM_BLKIO_H_
+#ifndef FSMOCK_BLKIO_H_
+#define FSMOCK_BLKIO_H_
 
 extern int bio_open(const char *path, int flags);
 extern int bio_close(int bfd);
@@ -32,5 +32,5 @@ extern ssize_t bio_writev(int bfd, const struct iovec *iov, int iovcnt, off_t of
 extern ssize_t bio_preadv2(int bfd, const struct iovec *iov, int iovcnt, off_t offset, int flags);
 extern ssize_t bio_writev2(int bfd, const struct iovec *iov, int iovcnt, off_t offset, int flags);
 
-#endif /* !BDSIM_BLKIO_H_ */
+#endif /* !FSMOCK_BLKIO_H_ */
 // vim:fenc=utf-8:tw=75:et

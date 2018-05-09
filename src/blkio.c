@@ -17,7 +17,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-#include "bdsim.h"
+#include "fsmock.h"
 
 int
 bio_open(const char *path UNUSED, int flags UNUSED)

@@ -16,8 +16,8 @@
  * <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef BDSIM_ERROR_H_
-#define BDSIM_ERROR_H_ 1
+#ifndef FSMOCK_ERROR_H_
+#define FSMOCK_ERROR_H_ 1
 
 #include <endian.h>
 #include <errno.h>
@@ -29,24 +29,24 @@
 #include <unistd.h>
 #include <byteswap.h>
 
-extern int PUBLIC bdsim_error_get(unsigned int n, char ** const filename,
+extern int PUBLIC fsmock_error_get(unsigned int n, char ** const filename,
                                   char ** const function, int *line,
                                   char ** const message, int *error)
         __attribute__((__nonnull__ (2, 3, 4, 5, 6)));
 extern int PUBLIC
         __attribute__((__nonnull__ (1, 2, 5)))
         __attribute__((__format__ (printf, 5, 6)))
-bdsim_error_set(const char *filename, const char *function,
+fsmock_error_set(const char *filename, const char *function,
                                   int line, int error, const char *fmt, ...)
         ;
-extern void PUBLIC bdsim_error_clear(void);
+extern void PUBLIC fsmock_error_clear(void);
 
-#define bdsim_error_real__(errval, file, function, line, fmt, args...) \
-        bdsim_error_set(file, function, line, errval, (fmt), ## args)
+#define fsmock_error_real__(errval, file, function, line, fmt, args...) \
+        fsmock_error_set(file, function, line, errval, (fmt), ## args)
 
-#define bdsim_error(fmt, args...) \
-        bdsim_error_real__(errno, __FILE__, __func__, __LINE__, (fmt), ## args)
-#define bdsim_error_val(errval, msg, args...) \
-        bdsim_error_real__(errval, __FILE__, __func__, __LINE__, (fmt), ## args)
+#define fsmock_error(fmt, args...) \
+        fsmock_error_real__(errno, __FILE__, __func__, __LINE__, (fmt), ## args)
+#define fsmock_error_val(errval, msg, args...) \
+        fsmock_error_real__(errval, __FILE__, __func__, __LINE__, (fmt), ## args)
 
-#endif /* BDSIM_ERROR_H_ */
+#endif /* FSMOCK_ERROR_H_ */

@@ -17,7 +17,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-#include "bdsim.h"
+#include "fsmock.h"
 
 #include <assert.h>
 #include <dlfcn.h>
@@ -65,14 +65,14 @@ DIR PRIVATE *rootdir = NULL;
 int PRIVATE rootfd = -1;
 
 static void
-bdsim_init(void)
+fsmock_init(void)
 {
         char *rootpath;
 
         if (libc)
                 return;
 
-        rootpath = getenv("LIBBDSIM_ROOT");
+        rootpath = getenv("LIBFSMOCK_ROOT");
         assert(rootpath != NULL);
 
         libc = dlmopen(LM_ID_NEWLM, "libc.so.6",
@@ -129,7 +129,7 @@ bdsim_init(void)
 }
 
 static void DESTRUCTOR
-bdsim_fini(void)
+fsmock_fini(void)
 {
         if (libc) {
                 dlclose(libc);
@@ -157,7 +157,7 @@ access(const char *pathname, int mode)
 {
         int ret;
 
-        bdsim_init();
+        fsmock_init();
 
         if (is_our_path(pathname))
                 ret = libc_faccessat(rootfd, pathname, mode, 0);
@@ -171,7 +171,7 @@ access(const char *pathname, int mode)
 int PUBLIC
 close(int fd)
 {
-        bdsim_init();
+        fsmock_init();
 
         fd = demangle_fd(fd);
         return do_call(int, close, fd);
@@ -180,7 +180,7 @@ close(int fd)
 int PUBLIC
 closedir(DIR *dirp)
 {
-        bdsim_init();
+        fsmock_init();
 
         return do_call(int, closedir, dirp);
 }
@@ -188,7 +188,7 @@ closedir(DIR *dirp)
 int PUBLIC
 dirfd(DIR *dirp)
 {
-        bdsim_init();
+        fsmock_init();
 
         return do_call(int, dirfd, dirp);
 }
@@ -196,7 +196,7 @@ dirfd(DIR *dirp)
 int PUBLIC
 faccessat(int dirfd, const char *pathname, int mode, int flags UNUSED)
 {
-        bdsim_init();
+        fsmock_init();
 
         errno = ENOSYS;
         log_call("faccessat", -1, dirfd, pathname, mode, flags);
@@ -211,7 +211,7 @@ fcntl(int fd, int cmd, ...)
         const char *cmdstr = "";
         void *val = NULL;
 
-        bdsim_init();
+        fsmock_init();
 
         fd = demangle_fd(fd);
         errno = ENOSYS;
@@ -316,7 +316,7 @@ fcntl(int fd, int cmd, ...)
 FILE PUBLIC *
 fdopen(int fd, const char *mode)
 {
-        bdsim_init();
+        fsmock_init();
 
         return do_call(FILE *, fdopen, fd, mode);
 }
@@ -324,7 +324,7 @@ fdopen(int fd, const char *mode)
 DIR PUBLIC *
 fdopendir(int fd)
 {
-        bdsim_init();
+        fsmock_init();
 
         errno = ENOSYS;
         log_call("fdopendir", NULL, fd);
@@ -334,7 +334,7 @@ fdopendir(int fd)
 int PUBLIC
 fileno(FILE *stream)
 {
-        bdsim_init();
+        fsmock_init();
 
         return do_call(int, fileno, stream);
 }
@@ -342,7 +342,7 @@ fileno(FILE *stream)
 FILE PUBLIC *
 fopen(const char *pathname, const char *mode)
 {
-        bdsim_init();
+        fsmock_init();
 
         return do_call(FILE *, fopen, pathname, mode);
 }
@@ -350,7 +350,7 @@ fopen(const char *pathname, const char *mode)
 FILE PUBLIC *
 freopen(const char *pathname, const char *mode, FILE *stream)
 {
-        bdsim_init();
+        fsmock_init();
 
         return do_call(FILE *, freopen, pathname, mode, stream);
 }
@@ -358,7 +358,7 @@ freopen(const char *pathname, const char *mode, FILE *stream)
 ssize_t PUBLIC
 getxattr(const char *path, const char *name, void *value, size_t size)
 {
-        bdsim_init();
+        fsmock_init();
 
         return do_call(ssize_t, getxattr, path, name, value, size);
 }
@@ -379,7 +379,7 @@ ioctl(int fd, unsigned long request, ...)
 off_t PUBLIC
 lseek(int fd, off_t offset, int whence)
 {
-        bdsim_init();
+        fsmock_init();
 
         fd = demangle_fd(fd);
         return do_call(off_t, lseek, fd, offset, whence);
@@ -388,7 +388,7 @@ lseek(int fd, off_t offset, int whence)
 int PUBLIC
 open(const char *pathname, int flags, ...)
 {
-        bdsim_init();
+        fsmock_init();
 
         mode_t mode = 0;
 
@@ -417,7 +417,7 @@ open(const char *pathname, int flags, ...)
 int PUBLIC
 openat(int dirfd, const char *pathname, int flags, ...)
 {
-        bdsim_init();
+        fsmock_init();
 
         errno = ENOSYS;
         if (flags & O_CREAT) {
@@ -436,7 +436,7 @@ openat(int dirfd, const char *pathname, int flags, ...)
 DIR PUBLIC *
 opendir(const char *name)
 {
-        bdsim_init();
+        fsmock_init();
 
         return do_call(DIR *, opendir, name);
 }
@@ -444,7 +444,7 @@ opendir(const char *name)
 struct dirent PUBLIC *
 readdir(DIR *dirp)
 {
-        bdsim_init();
+        fsmock_init();
 
         return do_call(struct dirent *, readdir, dirp);
 }
@@ -452,7 +452,7 @@ readdir(DIR *dirp)
 ssize_t PUBLIC
 readlink(const char *pathname, char *buf, size_t bufsiz)
 {
-        bdsim_init();
+        fsmock_init();
 
         return do_call(ssize_t, readlink, pathname, buf, bufsiz);
 }
@@ -460,7 +460,7 @@ readlink(const char *pathname, char *buf, size_t bufsiz)
 ssize_t PUBLIC
 readlinkat(int dirfd, const char *pathname, char *buf, size_t bufsiz)
 {
-        bdsim_init();
+        fsmock_init();
 
         errno = ENOSYS;
         log_call("readlinkat", -1, dirfd, pathname, buf, bufsiz);
@@ -469,7 +469,7 @@ readlinkat(int dirfd, const char *pathname, char *buf, size_t bufsiz)
 
 int PUBLIC stat(const char *pathname, struct stat *statbuf)
 {
-        bdsim_init();
+        fsmock_init();
 
         return do_call(int, stat, pathname, statbuf);
 }

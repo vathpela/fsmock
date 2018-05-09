@@ -1,4 +1,4 @@
-libbdsim.so.1 {
+libfsmock.so.1 {
 	local:	*;
 };
 
@@ -20,7 +20,7 @@ GLIBC_2.2.5 {
 		readdir;
 		readlink;
 	local:	*;
-} libbdsim.so.1;
+} libfsmock.so.1;
 
 GLIBC_2.3 {
 	global:

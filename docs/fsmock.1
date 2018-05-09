@@ -1,0 +1,13 @@
+.TH FSMOCK "1" "May 2018" "fsmock 0" "User Commands"
+.SH NAME
+fsmock \- a library to simulate block devices in test suites
+.SH SYNOPSIS
+.B LD_PRELOAD=libfsmock.so LIBFSMOCK_CONFIG=fsmock.cfg LIBFSMOCK_SYSFS=/path/to/fake/sys/
+.SH DESCRIPTION
+.PP
+\fBfsmock\fR is a library which intercepts system calls to block devices and
+replaces them with simulated versions.
+.SH "BUGS"
+.PP
+Please direct any bugs, features, patches, etc. to the Red Hat bootloader team
+at https://github.com/rhboot/fsmock \&.

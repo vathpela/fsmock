@@ -23,12 +23,12 @@ include $(TOPDIR)/Make.version
 	  -o $@ $^ $(LDLIBS)
 
 %.abixml : %.so
-	$(ABIDW) --headers-dir $(TOPDIR)/src/include/bdsim/ --out-file $@ $^
+	$(ABIDW) --headers-dir $(TOPDIR)/src/include/fsmock/ --out-file $@ $^
 
 %.abicheck : %.so
 	$(ABIDIFF) \
 		--suppr abignore \
-		--headers-dir2 $(TOPDIR)/src/include/bdsim/ \
+		--headers-dir2 $(TOPDIR)/src/include/fsmock/ \
 		$(patsubst %.so,%.abixml,$<) \
 		$<
 
@@ -82,5 +82,5 @@ define deps-of
 endef
 
 define get-config
-$(shell git config --local --get "bdsim.$(1)")
+$(shell git config --local --get "fsmock.$(1)")
 endef

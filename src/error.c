@@ -1,5 +1,5 @@
 /*
- * libbdsim - library to simulate block devices for testing
+ * libfsmock - library to simulate block devices for testing
  * Copyright 2018 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -18,7 +18,7 @@
  *
  */
 
-#include "bdsim.h"
+#include "fsmock.h"
 
 #include <errno.h>
 #include <stdarg.h>
@@ -51,7 +51,7 @@ static unsigned int current;
 
 int PUBLIC
 __attribute__((__nonnull__ (2, 3, 4, 5, 6)))
-bdsim_error_get(unsigned int n, char ** const filename, char ** const function,
+fsmock_error_get(unsigned int n, char ** const filename, char ** const function,
                 int *line, char ** const message, int *error)
 {
         if (!filename || !function || !line || !message || !error) {
@@ -74,7 +74,7 @@ bdsim_error_get(unsigned int n, char ** const filename, char ** const function,
 int PUBLIC
 __attribute__((__nonnull__ (1, 2, 5)))
 __attribute__((__format__ (printf, 5, 6)))
-bdsim_error_set(const char *filename, const char *function,
+fsmock_error_set(const char *filename, const char *function,
                 int line, int error, const char *fmt, ...)
 {
         error_table_entry et = { 0, };
@@ -129,7 +129,7 @@ err:
 }
 
 void PUBLIC DESTRUCTOR
-bdsim_error_clear(void)
+fsmock_error_clear(void)
 {
         if (error_table) {
                 for (unsigned int i = 0; i < current; i++) {
@@ -150,27 +150,27 @@ bdsim_error_clear(void)
         current = 0;
 }
 
-static int bdsim_verbose;
-static FILE *bdsim_errlog;
+static int fsmock_verbose;
+static FILE *fsmock_errlog;
 
 FILE PUBLIC *
-bdsim_get_logfile(void)
+fsmock_get_logfile(void)
 {
-        if (bdsim_errlog)
-                return bdsim_errlog;
+        if (fsmock_errlog)
+                return fsmock_errlog;
         return stderr;
 }
 
 void PUBLIC
-bdsim_set_verbose(int verbosity, FILE *errlog)
+fsmock_set_verbose(int verbosity, FILE *errlog)
 {
-        bdsim_verbose = verbosity;
+        fsmock_verbose = verbosity;
         if (errlog)
-                bdsim_errlog = errlog;
+                fsmock_errlog = errlog;
 }
 
 int PUBLIC
-bdsim_get_verbose(void)
+fsmock_get_verbose(void)
 {
-        return bdsim_verbose;
+        return fsmock_verbose;
 }

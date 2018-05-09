@@ -1,14 +1,14 @@
 *cpp:
 + -D_GNU_SOURCE
 
-*bdsim_cpp_options:
+*fsmock_cpp_options:
  -std=gnu11 -Wall -Wextra -Werror -Wno-error=cpp -Wno-missing-format-attribute -Wno-missing-field-initializers
 
 *cpp_options:
-+ %(bdsim_cpp_options)
++ %(fsmock_cpp_options)
 
 *cc1_options:
-+ %(bdsim_cpp_options) -Wmaybe-uninitialized -fno-merge-constants -fvisibility=hidden %{!r:%{!fpie:%{!fPIE:%{!fpic:%{!fPIC:%{!fno-pic:-fPIE}}}}}}
++ %(fsmock_cpp_options) -Wmaybe-uninitialized -fno-merge-constants -fvisibility=hidden %{!r:%{!fpie:%{!fPIE:%{!fpic:%{!fPIC:%{!fno-pic:-fPIE}}}}}}
 
 *self_spec:
 + %{!shared:%{!static:%{!r:-pie}}} %{static:-Wl,-no-fatal-warnings -Wl,-static -static -Wl,-z,relro,-z,now}

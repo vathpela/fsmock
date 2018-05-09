@@ -18,10 +18,10 @@
  *
  * Author(s): Peter Jones <pjones@redhat.com>
  */
-#ifndef BDSIM_API_H_
-#define BDSIM_API_H_
+#ifndef FSMOCK_API_H_
+#define FSMOCK_API_H_
 
-#include "bdsim.h"
+#include "fsmock.h"
 
 #include <dirent.h>
 #include <fcntl.h>
@@ -88,5 +88,5 @@ extern int PRIVATE (*libc_stat)(const char *pathname, struct stat *statbuf);
  */
 extern void PRIVATE *libc;
 
-#endif /* !BDSIM_API_H_ */
+#endif /* !FSMOCK_API_H_ */
 // vim:fenc=utf-8:tw=75

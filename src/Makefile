@@ -5,17 +5,17 @@ include $(TOPDIR)/Make.version
 include $(TOPDIR)/Make.rules
 include $(TOPDIR)/Make.defaults
 
-LIBTARGETS=libbdsim.so
-STATICLIBTARGETS=libbdsim.a
+LIBTARGETS=libfsmock.so
+STATICLIBTARGETS=libfsmock.a
 BINTARGETS=
 STATICBINTARGETS=
-PCTARGETS=bdsim.pc
+PCTARGETS=fsmock.pc
 TARGETS=$(LIBTARGETS) $(BINTARGETS) $(PCTARGETS)
 STATICTARGETS=$(STATICLIBTARGETS) $(STATICBINTARGETS)
 
-LIBBDSIM_SOURCES = api.c error.c
-LIBBDSIM_OBJECTS = $(patsubst %.S,%.o,$(patsubst %.c,%.o,$(LIBBDSIM_SOURCES)))
-ALL_SOURCES=$(LIBBDSIM_SOURCES) $(wildcard *.h)
+LIBFSMOCK_SOURCES = api.c error.c
+LIBFSMOCK_OBJECTS = $(patsubst %.S,%.o,$(patsubst %.c,%.o,$(LIBFSMOCK_SOURCES)))
+ALL_SOURCES=$(LIBFSMOCK_SOURCES) $(wildcard *.h)
 
 $(call deps-of,$(ALL_SOURCES)) : | deps
 -include $(call deps-of,$(ALL_SOURCES))
@@ -29,13 +29,13 @@ abidw : $(patsubst %.so,%.abixml,$(LIBTARGETS))
 
 abicheck : $(patsubst %.so,%.abicheck,$(LIBTARGETS))
 
-libbdsim.a : | $(GENERATED_SOURCES)
-libbdsim.a : $(patsubst %.o,%.static.o,$(LIBBDSIM_OBJECTS))
+libfsmock.a : | $(GENERATED_SOURCES)
+libfsmock.a : $(patsubst %.o,%.static.o,$(LIBFSMOCK_OBJECTS))
 
-libbdsim.so : $(LIBBDSIM_OBJECTS)
-libbdsim.so : | $(GENERATED_SOURCES) libbdsim.map
-libbdsim.so : LIBS=dl
-libbdsim.so : MAP=libbdsim.map
+libfsmock.so : $(LIBFSMOCK_OBJECTS)
+libfsmock.so : | $(GENERATED_SOURCES) libfsmock.map
+libfsmock.so : LIBS=dl
+libfsmock.so : MAP=libfsmock.map
 
 deps : $(ALL_SOURCES)
 	$(MAKE) -f $(SRCDIR)/Make.deps deps SOURCES="$(ALL_SOURCES)"
@@ -59,4 +59,4 @@ install : all
 	$(foreach x, $(BINTARGETS), $(INSTALL) -m 755 $(x) $(DESTDIR)$(bindir);)
 
 .PHONY: test deps
-.SECONDARY : libbdsim.so.1.$(VERSION) libbdsim.so.1
+.SECONDARY : libfsmock.so.1.$(VERSION) libfsmock.so.1

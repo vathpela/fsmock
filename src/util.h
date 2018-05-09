@@ -17,8 +17,8 @@
  *
  * Author(s): Peter Jones <pjones@redhat.com>
  */
-#ifndef BDSIM_UTIL_H_
-#define BDSIM_UTIL_H_ 1
+#ifndef FSMOCK_UTIL_H_
+#define FSMOCK_UTIL_H_ 1
 
 #include <alloca.h>
 #include <dirent.h>
@@ -148,7 +148,7 @@ read_file(int fd, uint8_t **buf, size_t *bufsize)
 
         uint8_t *newbuf;
         if (!(newbuf = calloc(size, sizeof (uint8_t)))) {
-                bdsim_error("could not allocate memory");
+                fsmock_error("could not allocate memory");
                 return -1;
         }
         *buf = newbuf;
@@ -173,7 +173,7 @@ read_file(int fd, uint8_t **buf, size_t *bufsize)
                         *buf = NULL;
                         *bufsize = 0;
                         errno = saved_errno;
-                        bdsim_error("could not read from file");
+                        fsmock_error("could not read from file");
                         return -1;
                 }
                 filesize += s;
@@ -188,7 +188,7 @@ read_file(int fd, uint8_t **buf, size_t *bufsize)
                                 *buf = NULL;
                                 *bufsize = 0;
                                 errno = ENOMEM;
-                                bdsim_error("could not read from file");
+                                fsmock_error("could not read from file");
                                 return -1;
                         }
                         newbuf = realloc(*buf, size + 4096);
@@ -198,7 +198,7 @@ read_file(int fd, uint8_t **buf, size_t *bufsize)
                                 *buf = NULL;
                                 *bufsize = 0;
                                 errno = saved_errno;
-                                bdsim_error("could not allocate memory");
+                                fsmock_error("could not allocate memory");
                                 return -1;
                         }
                         *buf = newbuf;
@@ -211,7 +211,7 @@ read_file(int fd, uint8_t **buf, size_t *bufsize)
         if (!newbuf) {
                 free(*buf);
                 *buf = NULL;
-                bdsim_error("could not allocate memory");
+                fsmock_error("could not allocate memory");
                 return -1;
         }
         newbuf[filesize] = '\0';
@@ -304,7 +304,7 @@ get_sector_size(int filedes)
 
 /*
  * This returns a static buffer containing either "" or whatever is set in the
- * environment variable LIBBDSIM_SYSFS
+ * environment variable LIBFSMOCK_SYSFS
  */
 static inline char *
 sysfs_root(void)
@@ -314,7 +314,7 @@ sysfs_root(void)
 
         if (sysfs_root)
                 return sysfs_root;
-        sysfs_root = getenv("LIBBDSIM_SYSFS");
+        sysfs_root = getenv("LIBFSMOCK_SYSFS");
         if (!sysfs_root)
                 sysfs_root = default_sysfs_root;
         return sysfs_root;
@@ -329,11 +329,11 @@ sysfs_root(void)
                 rc_ = asprintfa(&dirname_, "%s/%s", sysfs_root(),       \
                                 path);                                  \
                 if (rc_ < 0) {                                          \
-                        bdsim_error("asprintfa() failed");              \
+                        fsmock_error("asprintfa() failed");              \
                 } else {                                                \
                         d_ = opendir(dirname_);                         \
                         if (!d_)                                        \
-                                bdsim_error("opendir failed on \"%s\"", \
+                                fsmock_error("opendir failed on \"%s\"", \
                                           path);                        \
                 }                                                       \
                 d_;                                                     \
@@ -351,7 +351,7 @@ get_file(uint8_t **result, const char * const fmt, ...)
         int fd;
 
         if (result == NULL) {
-                bdsim_error("invalid parameter 'result'");
+                fsmock_error("invalid parameter 'result'");
                 return -1;
         }
 
@@ -359,13 +359,13 @@ get_file(uint8_t **result, const char * const fmt, ...)
         rc = vasprintfa(&path, fmt, ap);
         va_end(ap);
         if (rc < 0) {
-                bdsim_error("could not allocate memory");
+                fsmock_error("could not allocate memory");
                 return -1;
         }
 
         fd = open(path, O_RDONLY);
         if (fd < 0) {
-                bdsim_error("could not open file \"%s\" for reading",
+                fsmock_error("could not open file \"%s\" for reading",
                             path);
                 return -1;
         }
@@ -376,7 +376,7 @@ get_file(uint8_t **result, const char * const fmt, ...)
         errno = error;
 
         if (rc < 0) {
-                bdsim_error("could not read file \"%s\"", path);
+                fsmock_error("could not read file \"%s\"", path);
                 return -1;
         }
 
@@ -418,10 +418,10 @@ get_file(uint8_t **result, const char * const fmt, ...)
                         if (_linksz >= 0)                               \
                                 _lb[_linksz] = '\0';                    \
                         else                                            \
-                                bdsim_error("readlink of %s failed", _pn);\
+                                fsmock_error("readlink of %s failed", _pn);\
                         *(linkbuf) = _lb;                               \
                 } else {                                                \
-                        bdsim_error("could not allocate memory");       \
+                        fsmock_error("could not allocate memory");       \
                 }                                                       \
                 _rc;                                                    \
         })
@@ -435,9 +435,9 @@ get_file(uint8_t **result, const char * const fmt, ...)
                 if (rc_ >= 0) {                                         \
                         rc_ = stat(pn_, statbuf);                       \
                         if (rc_ < 0)                                    \
-                                bdsim_error("could not stat %s", pn_);  \
+                                fsmock_error("could not stat %s", pn_);  \
                 } else {                                                \
-                        bdsim_error("could not allocate memory");       \
+                        fsmock_error("could not allocate memory");       \
                 }                                                       \
                 rc_;                                                    \
         })
@@ -715,8 +715,8 @@ is_our_path(const char *pathname)
 
 #define DEBUG 1
 
-extern void PUBLIC bdsim_set_verbose(int verbosity, FILE *errlog);
-extern int PUBLIC bdsim_get_verbose(void);
-extern FILE PUBLIC *bdsim_get_logfile(void);
+extern void PUBLIC fsmock_set_verbose(int verbosity, FILE *errlog);
+extern int PUBLIC fsmock_get_verbose(void);
+extern FILE PUBLIC *fsmock_get_logfile(void);
 
-#endif /* BDSIM_UTIL_H_ */
+#endif /* FSMOCK_UTIL_H_ */

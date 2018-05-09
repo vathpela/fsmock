@@ -1,12 +1,12 @@
 /*
- * bdsim.h
+ * fsmock.h
  * Copyright 2018 Peter Jones <pjones@redhat.com>
  *
  * Distributed under terms of the GPLv3 license.
  */
 
-#ifndef BDSIM_H_
-#define BDSIM_H_
+#ifndef FSMOCK_H_
+#define FSMOCK_H_
 
 #include "fix_coverity.h"
 
@@ -27,5 +27,5 @@
 #include "api.h"
 #include "blkio.h"
 
-#endif /* !BDSIM_H_ */
+#endif /* !FSMOCK_H_ */
 // vim:fenc=utf-8:tw=75
