@@ -21,6 +21,7 @@
 #define BDSIM_UTIL_H_ 1
 
 #include <alloca.h>
+#include <dirent.h>
 #include <endian.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -135,6 +136,7 @@
                 })
 #endif
 
+#define startswith(str, prefix) ({!strncmp(str, prefix, strlen(prefix));})
 
 static inline int UNUSED
 read_file(int fd, uint8_t **buf, size_t *bufsize)
@@ -613,6 +615,48 @@ find_path_segment(const char *path, int segment, const char **pos, size_t *len)
                 ret_;                                                   \
         })
 
+#define get_arg(param, type)                                    \
+        ({                                                      \
+                va_list ap_;                                    \
+                type arg_;                                      \
+                va_start(ap_, param);                           \
+                arg_ = va_arg(ap_, type);                       \
+                va_end(ap_);                                    \
+                arg_;                                           \
+        })
+
+
+#define get_ap_arg(param, type) va_arg(param, type)
+
+extern DIR PRIVATE *rootdir;
+extern int PRIVATE rootfd;
+
+static inline bool
+is_blkdev_fd(int fd)
+{
+        return ((((unsigned long long)fd >> ((sizeof(fd) * 8) - 8)) & 0xffULL) == 0xbbULL);
+}
+
+static inline int
+demangle_fd(int fd)
+{
+        if (is_blkdev_fd(fd)) {
+                unsigned int mask = ~(0x0ffU << ((sizeof(fd) * 8U) - 8U));
+
+                fd &= mask;
+        }
+        return fd;
+}
+
+static inline int
+mangle_fd(int fd)
+{
+        unsigned int mask = ~(0x0ffU << ((sizeof(fd) * 8U) - 8U));
+        unsigned int marker = 0x0bbU << ((sizeof(fd) * 8U) - 8U);
+
+        return ((fd & mask) | marker);
+}
+
 static inline bool UNUSED
 is_blkdev_at(int dirfd, const char *pathname)
 {
@@ -637,6 +681,21 @@ is_blkdev(const char *pathname)
         if (rc < 0)
                 return false;
         return S_ISBLK(sb.st_mode);
+}
+
+static inline bool UNUSED
+is_our_path(const char *pathname)
+{
+        char real[PATH_MAX];
+        char *ret;
+
+        ret = realpath(pathname, real);
+        if (ret == NULL)
+                return false;
+        return (startswith(real, "/dev/")
+                || startswith(real, "/sys/")
+                || startswith(real, "/proc/")
+                || is_blkdev(real));
 }
 
 #define debug_(file, line, func, level, fmt, args...)                   \

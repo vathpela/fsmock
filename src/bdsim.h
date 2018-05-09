@@ -22,9 +22,10 @@
 #define VERSION(name, version) __asm__(".symver " name "," name "@@" version)
 #define NORETURN __attribute__((__noreturn__))
 
-#include "api.h"
 #include "error.h"
 #include "util.h"
+#include "api.h"
+#include "blkio.h"
 
 #endif /* !BDSIM_H_ */
 // vim:fenc=utf-8:tw=75

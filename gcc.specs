@@ -2,7 +2,7 @@
 + -D_GNU_SOURCE
 
 *bdsim_cpp_options:
- -Werror -Wall -std=gnu11 -Wextra
+ -std=gnu11 -Wall -Wextra -Werror -Wno-error=cpp -Wno-missing-format-attribute -Wno-missing-field-initializers
 
 *cpp_options:
 + %(bdsim_cpp_options)
