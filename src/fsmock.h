@@ -10,6 +10,8 @@
 
 #include "fix_coverity.h"
 
+#include <fsmock.h>
+
 #define UNUSED __attribute__((__unused__))
 #define HIDDEN __attribute__((__visibility__ ("hidden")))
 #define PRIVATE HIDDEN
@@ -22,10 +24,12 @@
 #define VERSION(name, version) __asm__(".symver " name "," name "@@" version)
 #define NORETURN __attribute__((__noreturn__))
 
+#include "list.h"
 #include "error.h"
 #include "util.h"
 #include "api.h"
 #include "blkio.h"
+#include "mount.h"
 
 #endif /* !FSMOCK_PRIVATE_H_ */
 // vim:fenc=utf-8:tw=75

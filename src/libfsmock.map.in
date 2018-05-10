@@ -1,4 +1,6 @@
 libfsmock.so.1 {
+	global:	fsmock_mount;
+		fsmock_umount;
 	local:	*;
 };
 
