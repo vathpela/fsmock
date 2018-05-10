@@ -33,8 +33,11 @@
 #include <unistd.h>
 
 /*
- * These are the functions we publish to the world
+ * These are the functions we publish to the world under an assumed name.
+ * We have the redundant decls to make a build error occur if they're
+ * incorrectly defined.
  */
+#pragma GCC diagnostic ignored "-Wredundant-decls"
 extern int access(const char *pathname, int mode) PUBLIC;
 extern int close(int fd) PUBLIC;
 extern int closedir(DIR *dirp) PUBLIC;
@@ -56,6 +59,7 @@ extern struct dirent *readdir(DIR *dirp) PUBLIC;
 extern ssize_t readlink(const char *pathname, char *buf, size_t bufsiz) PUBLIC;
 extern ssize_t readlinkat(int dirfd, const char *pathname, char *buf, size_t bufsiz) PUBLIC;
 extern int stat(const char *pathname, struct stat *statbuf) PUBLIC;
+#pragma GCC diagnostic error "-Wredundant-decls"
 
 /*
  * Our constructor will set these up as the calls to libc's functions.
