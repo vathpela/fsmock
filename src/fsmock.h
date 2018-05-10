@@ -5,8 +5,8 @@
  * Distributed under terms of the GPLv3 license.
  */
 
-#ifndef FSMOCK_H_
-#define FSMOCK_H_
+#ifndef FSMOCK_PRIVATE_H_
+#define FSMOCK_PRIVATE_H_
 
 #include "fix_coverity.h"
 
@@ -27,5 +27,5 @@
 #include "api.h"
 #include "blkio.h"
 
-#endif /* !FSMOCK_H_ */
+#endif /* !FSMOCK_PRIVATE_H_ */
 // vim:fenc=utf-8:tw=75
