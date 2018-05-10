@@ -19,6 +19,7 @@ GLIBC_2.2.5 {
 		opendir;
 		readdir;
 		readlink;
+		stat;
 	local:	*;
 } libfsmock.so.1;
 
