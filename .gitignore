@@ -12,8 +12,9 @@
 *.so.*
 *.tar
 *.tar.*
-core.*
 *.spec
+*.strace
 *.map
+core.*
 cov-int/
 scan-results/
